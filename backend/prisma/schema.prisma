@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Model
+model User {
+  id        String    @id @default(cuid()) // Unique identifier
+  username  String    @unique // Unique username
+  email     String    @unique // Unique email
+  posts     Post[]    // One-to-many relationship with Post
+  comments  Comment[] // One-to-many relationship with Comment
+  createdAt DateTime  @default(now()) // Timestamp for user creation
+  updatedAt DateTime  @updatedAt() // Timestamp for updates
+}
+
+// Post Model
+model Post {
+  id        String    @id @default(cuid()) // Unique identifier
+  title     String    // Post title
+  content   String    // Post content
+  titleColor String   // Post Title Color
+  author    User      @relation(fields: [authorId], references: [id]) // Foreign key relation to User
+  authorId  String    // Foreign key
+  comments  Comment[] // One-to-many relationship with Comment
+  createdAt DateTime  @default(now()) // Timestamp for post creation
+  updatedAt DateTime  @updatedAt() // Timestamp for updates
+}
+
+// Comment Model
+model Comment {
+  id        String    @id @default(cuid()) // Unique identifier
+  content   String    // Comment content
+  post      Post      @relation(fields: [postId], references: [id]) // Foreign key relation to Post
+  postId    String    // Foreign key
+  author    User      @relation(fields: [authorId], references: [id]) // Foreign key relation to User
+  authorId  String    // Foreign key
+  createdAt DateTime  @default(now()) // Timestamp for comment creation
+  updatedAt DateTime  @updatedAt() // Timestamp for updates
+}
