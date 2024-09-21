@@ -5,23 +5,31 @@ import Post from "./components/Post";
 import { getPosts } from "./services/postServices";
 import CreatePostModal from "./components/CreatePost";
 import PostModal from "./components/SinglePost";
+import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
-  const [posts, setPosts] = React.useState([]);
+  const posts = useSelector((state: any) => state?.posts);
+
+  const dispatch = useDispatch();
+
   const [open, setOpen] = React.useState(false);
   const [openPost, setOpenPost] = React.useState(false);
   const [currPost, setCurrPost] = React.useState();
 
   const fetchPosts = async () => {
     const posts = await getPosts();
-    setPosts(posts);
+
+    dispatch({
+      type: "SET_POSTS",
+      payload: posts,
+    });
   };
 
   const handleOpen = () => setOpen(!open);
 
   const handleOpenPost = (post: any) => {
-    setOpenPost(!openPost);
     setCurrPost(post);
+    setOpenPost(!openPost);
   };
 
   useEffect(() => {
@@ -32,17 +40,12 @@ const App = () => {
     <>
       <CreatePostModal open={open} setOpen={setOpen} handleOpen={handleOpen} />
       {currPost && (
-        <PostModal
-          post={currPost}
-          open={true}
-          setOpen={setOpenPost}
-          handleOpen={handleOpenPost}
-        />
+        <PostModal post={currPost} open={openPost} setOpen={setOpenPost} />
       )}
       <Header />
 
       <div className="w-full max-w-full h-[calc(100vh-60px)] bg-gray-50">
-        <div className="w-1/2 min-h-[calc(100vh-60px)] mx-auto">
+        <div className="w-full lg:w-1/2 min-h-[calc(100vh-60px)] mx-auto">
           <div className="w-full bg-gray-200 my-4 shadow-md p-8 flex items-center">
             <Avatar
               src="https://docs.material-tailwind.com/img/face-2.jpg"

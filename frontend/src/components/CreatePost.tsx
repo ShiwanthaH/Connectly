@@ -11,12 +11,13 @@ import {
 } from "@material-tailwind/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { createPost } from "../services/postServices";
+import { createPost, getPosts } from "../services/postServices";
+import { useDispatch } from "react-redux";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   content: Yup.string().required("Content is required"),
-//   titleColor: Yup.string().required("Please select a title color"),
+  //   titleColor: Yup.string().required("Please select a title color"),
 });
 
 interface FormValues {
@@ -32,16 +33,33 @@ interface props {
 }
 
 const CreatePostModal = ({ open, setOpen, handleOpen }: props) => {
+  const dispatch = useDispatch();
+
   const initialValues: FormValues = {
     title: "",
     content: "",
     titleColor: "",
   };
 
+  const colors = [
+    { value: "red", label: "Red" },
+    { value: "blue", label: "Blue" },
+    { value: "green", label: "Green" },
+    { value: "yellow", label: "Yellow" },
+    { value: "purple", label: "Purple" },
+  ];
+
   const handleSubmit = async (values: FormValues) => {
     console.log(values);
-    await createPost(values?.title, values?.content);
-    setOpen(false); 
+    const data = await createPost(values?.title, values?.content);
+    const newPosts = await getPosts();
+    if (data) {
+      dispatch({
+        type: "SET_POSTS",
+        payload: newPosts,
+      });
+    }
+    setOpen(false);
   };
 
   return (
@@ -103,11 +121,15 @@ const CreatePostModal = ({ open, setOpen, handleOpen }: props) => {
                     Title Color
                   </label>
                   <Field name="titleColor" as={Select} className="w-full mt-1">
-                    <Option value="red">Red</Option>
-                    <Option value="blue">Blue</Option>
-                    <Option value="green">Green</Option>
-                    <Option value="yellow">Yellow</Option>
-                    <Option value="purple">Purple</Option>
+                    {colors.map((color) => (
+                      <Option key={color.value} className="flex items-center">
+                        <div
+                          className="w-[12px] h-[12px] rounded-full mr-2"
+                          style={{ backgroundColor: color.value }}
+                        ></div>
+                        {color.label}
+                      </Option>
+                    ))}
                   </Field>
                   <ErrorMessage
                     name="titleColor"

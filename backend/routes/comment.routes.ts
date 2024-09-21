@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", getCommentsByPost);
+router.post("/post", getCommentsByPost);
 router.get("/:id", getComment);
 router.post("/", createComment);
 router.put("/:id", updateComment);

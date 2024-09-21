@@ -1,40 +1,45 @@
 import { API_URL } from "../constants";
 
-export const getPosts = async () => {
-    const res = await fetch(`${API_URL}/comments`);
+export const getComments = async (postId: string) => {
+    console.log(postId)
+    const res = await fetch(`${API_URL}/comment/post`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({postId}),
+    });
     const data = await res.json();
     return data;
 }
 
-export const getPost = async (id: number) => {
-    const res = await fetch(`${API_URL}/comments/${id}`);
+export const getComment = async (id: number) => {
+    const res = await fetch(`${API_URL}/comment/${id}`);
     const data = await res.json();
     return data;
 }
 
-export const deletePost = async (id: number) => {
-    const res = await fetch(`${API_URL}/comments/${id}`, {
+export const deleteComment = async (id: number) => {
+    const res = await fetch(`${API_URL}/comment/${id}`, {
         method: "DELETE",
     });
     const data = await res.json();
     return data;
 }
 
-export const createPost = async (name: string, content: string) => {
-    const res = await fetch(`${API_URL}/comments`, {
+export const createComment = async (content: string, postId: string, authorId: string) => {
+    const res = await fetch(`${API_URL}/comment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, content }),
+        body: JSON.stringify({ content, postId, authorId }),
     });
     const data = await res.json();
     return data;
 }
 
-export const updatePost = async (id: number, name: string, content: string) => {
-    const res = await fetch(`${API_URL}/comments/${id}`, {
+export const updateComment = async (content: string, id: string) => {
+    const res = await fetch(`${API_URL}/comment/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, content }),
+        body: JSON.stringify({ content }),
     });
     const data = await res.json();
     return data;
