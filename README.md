@@ -1,27 +1,33 @@
-###Connectly - The Social Media Application
+# Connectly - The Social Media Application
 
 
-##Backend
+## Backend
 
-# Navigate to the backend folder
+### Navigate to the backend folder
 ```cd backend```
 
-# Install the necessary dependencies
+### Install the necessary dependencies
 ```npm install```
 
-# Start the development server
+### Migrating SQLite database
+```npx prisma migrate dev --name initialize```
+
+### Adding port to .env
+```PORT=8000```
+
+### Start the development server
 ```npm run dev```
 
 
-##Frontend
+## Frontend
 
-# Navigate to the backend folder
+### Navigate to the backend folder
 ```cd frontend```
 
-# Install the necessary dependencies
+### Install the necessary dependencies
 ```npm install```
 
-# Start the development server
+### Start the development server
 ```npm run dev```
 
 
