@@ -15,7 +15,7 @@
 ### Adding port to .env
 ```PORT=8000```
 
-# Start the development server
+### Start the development server
 ```npm run dev```
 
 
