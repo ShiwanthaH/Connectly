@@ -9,6 +9,12 @@
 ### Install the necessary dependencies
 ```npm install```
 
+### Migrating SQLite database
+```npx prisma migrate dev --name initialize```
+
+### Adding port to .env
+```PORT=8000```
+
 # Start the development server
 ```npm run dev```
 
@@ -20,12 +26,6 @@
 
 ### Install the necessary dependencies
 ```npm install```
-
-### Migrating SQLite database
-```npx prisma migrate dev --name initialize```
-
-### Adding port to .env
-```PORT=8000```
 
 ### Start the development server
 ```npm run dev```
